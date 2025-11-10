@@ -15,30 +15,40 @@ function setFilter(value: TodoFilter): void {
 </script>
 
 <template>
-  <div class="filters">
-    <button
-      type="button"
-      class="filters__btn"
-      :class="{ 'filters__btn--active': props.filter === 'all' }"
-      @click="setFilter('all')"
-    >
-      All
-    </button>
-    <button
-      type="button"
-      class="filters__btn"
-      :class="{ 'filters__btn--active': props.filter === 'active' }"
-      @click="setFilter('active')"
-    >
-      Active
-    </button>
-    <button
-      type="button"
-      class="filters__btn"
-      :class="{ 'filters__btn--active': props.filter === 'completed' }"
-      @click="setFilter('completed')"
-    >
-      Completed
-    </button>
-  </div>
+  <fieldset class="filters" aria-label="Filter tasks">
+    <legend class="filters__legend">Show</legend>
+
+    <label class="filters__option">
+      <input
+        type="radio"
+        name="todo-filter"
+        value="all"
+        :checked="props.filter === 'all'"
+        @change="setFilter('all')"
+      />
+      <span>All</span>
+    </label>
+
+    <label class="filters__option">
+      <input
+        type="radio"
+        name="todo-filter"
+        value="active"
+        :checked="props.filter === 'active'"
+        @change="setFilter('active')"
+      />
+      <span>Active</span>
+    </label>
+
+    <label class="filters__option">
+      <input
+        type="radio"
+        name="todo-filter"
+        value="completed"
+        :checked="props.filter === 'completed'"
+        @change="setFilter('completed')"
+      />
+      <span>Completed</span>
+    </label>
+  </fieldset>
 </template>

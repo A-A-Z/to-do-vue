@@ -3,6 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import TodoInput from './components/TodoInput.vue' // './components/TodoInput.vue'
 import TodoFilters from './components/TodoFilters.vue'
 import TodoList from './components/TodoList.vue'
+import { createId } from './utils/createId'
 import type { Todo, TodoFilter } from './types'
 
 const STORAGE_KEY = 'vue-3.5-todo-example'
@@ -50,13 +51,6 @@ const remainingCount = computed<number>(
   () => todos.value.filter(t => !t.done).length
 )
 
-function createId(): string {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID()
-  }
-  return String(Date.now()) + Math.random().toString(16).slice(2)
-}
-
 function addTodo(title: string): void {
   const trimmed = title.trim()
   if (!trimmed) return
@@ -87,9 +81,7 @@ function clearCompleted(): void {
 <template>
   <main class="app">
     <section class="card">
-      <h1 class="app__title">Vue 3.5 To-Do List (TS)</h1>
-
-      <TodoInput @add-todo="addTodo" />
+      <h1 class="app__title">ToDoVue</h1>
 
       <TodoFilters v-model:filter="filter" />
 
@@ -98,6 +90,8 @@ function clearCompleted(): void {
         @toggle="toggleTodo"
         @remove="removeTodo"
       />
+
+      <TodoInput @add-todo="addTodo" />
 
       <footer class="footer">
         <span>

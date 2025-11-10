@@ -31,6 +31,6 @@ function handleRemove(id: string): void {
     />
   </ul>
   <p v-else class="empty">
-    No tasks yet. Add something above 👆
+    No tasks
   </p>
 </template>
