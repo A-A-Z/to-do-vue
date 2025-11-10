@@ -1,13 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
-const emit = defineEmits(['add-todo'])
+const emit = defineEmits<{
+  (e: 'add-todo', title: string): void
+}>()
 
 const title = ref('')
 
-function submit() {
-  if (!title.value.trim()) return
-  emit('add-todo', title.value)
+function submit(): void {
+  const value = title.value.trim()
+  if (!value) return
+  emit('add-todo', value)
   title.value = ''
 }
 </script>

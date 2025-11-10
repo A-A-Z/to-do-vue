@@ -1,18 +1,20 @@
-<script setup>
-const props = defineProps({
-  todo: {
-    type: Object,
-    required: true
-  }
-})
+<script setup lang="ts">
+import type { Todo } from '../types'
 
-const emit = defineEmits(['toggle', 'remove'])
+const props = defineProps<{
+  todo: Todo
+}>()
 
-function toggle() {
+const emit = defineEmits<{
+  (e: 'toggle', id: string): void
+  (e: 'remove', id: string): void
+}>()
+
+function toggle(): void {
   emit('toggle', props.todo.id)
 }
 
-function remove() {
+function remove(): void {
   emit('remove', props.todo.id)
 }
 </script>
@@ -22,14 +24,14 @@ function remove() {
     <label class="todo-item__label">
       <input
         type="checkbox"
-        :checked="todo.done"
+        :checked="props.todo.done"
         @change="toggle"
       />
       <span
         class="todo-item__title"
-        :class="{ 'todo-item__title--done': todo.done }"
+        :class="{ 'todo-item__title--done': props.todo.done }"
       >
-        {{ todo.title }}
+        {{ props.todo.title }}
       </span>
     </label>
     <button

@@ -1,14 +1,15 @@
-<script setup>
-const props = defineProps({
-  filter: {
-    type: String,
-    default: 'all'
-  }
-})
+<script setup lang="ts">
+import type { TodoFilter } from '../types'
 
-const emit = defineEmits(['update:filter'])
+const props = defineProps<{
+  filter: TodoFilter
+}>()
 
-function setFilter(value) {
+const emit = defineEmits<{
+  (e: 'update:filter', value: TodoFilter): void
+}>()
+
+function setFilter(value: TodoFilter): void {
   emit('update:filter', value)
 }
 </script>
@@ -18,7 +19,7 @@ function setFilter(value) {
     <button
       type="button"
       class="filters__btn"
-      :class="{ 'filters__btn--active': filter === 'all' }"
+      :class="{ 'filters__btn--active': props.filter === 'all' }"
       @click="setFilter('all')"
     >
       All
@@ -26,7 +27,7 @@ function setFilter(value) {
     <button
       type="button"
       class="filters__btn"
-      :class="{ 'filters__btn--active': filter === 'active' }"
+      :class="{ 'filters__btn--active': props.filter === 'active' }"
       @click="setFilter('active')"
     >
       Active
@@ -34,7 +35,7 @@ function setFilter(value) {
     <button
       type="button"
       class="filters__btn"
-      :class="{ 'filters__btn--active': filter === 'completed' }"
+      :class="{ 'filters__btn--active': props.filter === 'completed' }"
       @click="setFilter('completed')"
     >
       Completed

@@ -1,31 +1,32 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import TodoInput from './components/TodoInput.vue'
+import TodoInput from './components/TodoInput.vue' // './components/TodoInput.vue'
 import TodoFilters from './components/TodoFilters.vue'
 import TodoList from './components/TodoList.vue'
+import type { Todo, TodoFilter } from './types'
 
 const STORAGE_KEY = 'vue-3.5-todo-example'
 
-// state
-const todos = ref([])
-/**
- * filter can be: "all", "active", "completed"
- */
-const filter = ref('all')
+const todos = ref<Todo[]>([])
+const filter = ref<TodoFilter>('all')
 
-// load from localStorage on mount
+// load from localStorage
 onMounted(() => {
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved) {
     try {
-      todos.value = JSON.parse(saved)
+      const parsed = JSON.parse(saved) as Todo[]
+      // naive validation
+      if (Array.isArray(parsed)) {
+        todos.value = parsed
+      }
     } catch {
       todos.value = []
     }
   }
 })
 
-// persist to localStorage whenever todos change
+// persist to localStorage
 watch(
   todos,
   (value) => {
@@ -34,54 +35,60 @@ watch(
   { deep: true }
 )
 
-// derived state
-const filteredTodos = computed(() => {
-  if (filter.value === 'active') {
-    return todos.value.filter(t => !t.done)
+const filteredTodos = computed<Todo[]>(() => {
+  switch (filter.value) {
+    case 'active':
+      return todos.value.filter(t => !t.done)
+    case 'completed':
+      return todos.value.filter(t => t.done)
+    default:
+      return todos.value
   }
-  if (filter.value === 'completed') {
-    return todos.value.filter(t => t.done)
-  }
-  return todos.value
 })
 
-const remainingCount = computed(
+const remainingCount = computed<number>(
   () => todos.value.filter(t => !t.done).length
 )
 
-// actions
-function addTodo(title) {
+function createId(): string {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID()
+  }
+  return String(Date.now()) + Math.random().toString(16).slice(2)
+}
+
+function addTodo(title: string): void {
   const trimmed = title.trim()
   if (!trimmed) return
 
   todos.value.push({
-    id: crypto.randomUUID ? crypto.randomUUID() : Date.now(),
+    id: createId(),
     title: trimmed,
     done: false
   })
 }
 
-function toggleTodo(id) {
+function toggleTodo(id: string): void {
   const todo = todos.value.find(t => t.id === id)
   if (todo) {
     todo.done = !todo.done
   }
 }
 
-function removeTodo(id) {
+function removeTodo(id: string): void {
   todos.value = todos.value.filter(t => t.id !== id)
 }
 
-function clearCompleted() {
+function clearCompleted(): void {
   todos.value = todos.value.filter(t => !t.done)
 }
 </script>
 
 <template>
   <main class="app">
-    <h1 class="app__title">Vue 3.5 To-Do List</h1>
-
     <section class="card">
+      <h1 class="app__title">Vue 3.5 To-Do List (TS)</h1>
+
       <TodoInput @add-todo="addTodo" />
 
       <TodoFilters v-model:filter="filter" />
@@ -93,7 +100,9 @@ function clearCompleted() {
       />
 
       <footer class="footer">
-        <span>{{ remainingCount }} task<span v-if="remainingCount !== 1">s</span> left</span>
+        <span>
+          {{ remainingCount }} task<span v-if="remainingCount !== 1">s</span> left
+        </span>
         <button
           class="btn-link"
           type="button"
