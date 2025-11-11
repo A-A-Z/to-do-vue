@@ -11,17 +11,17 @@ const emit = defineEmits<{
   (e: 'remove', id: string): void
 }>()
 
-function handleToggle(id: string): void {
+const handleToggle = (id: string): void => {
   emit('toggle', id)
 }
 
-function handleRemove(id: string): void {
+const handleRemove = (id: string): void => {
   emit('remove', id)
 }
 </script>
 
 <template>
-  <ul v-if="props.todos.length" class="todo-list">
+  <ul v-if="props.todos.length" class="list">
     <TodoItem
       v-for="todo in props.todos"
       :key="todo.id"
@@ -34,3 +34,15 @@ function handleRemove(id: string): void {
     No tasks
   </p>
 </template>
+
+<style scoped>
+.list {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+</style>

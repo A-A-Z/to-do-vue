@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import TodoInput from './components/TodoInput.vue' // './components/TodoInput.vue'
+import TodoInput from './components/TodoInput.vue'
 import TodoFilters from './components/TodoFilters.vue'
 import TodoList from './components/TodoList.vue'
+import TodoFooter from './components/TodoFooter.vue'
 import { createId } from './utils/createId'
+
 import type { Todo, TodoFilter } from './types'
 
-const STORAGE_KEY = 'vue-3.5-todo-example'
+const STORAGE_KEY = 'to-do-vue-app'
 
 const todos = ref<Todo[]>([])
 const filter = ref<TodoFilter>('all')
@@ -14,7 +16,7 @@ const filter = ref<TodoFilter>('all')
 // load from localStorage
 onMounted(() => {
   const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved) as Todo[]
       // naive validation
@@ -30,7 +32,7 @@ onMounted(() => {
 // persist to localStorage
 watch(
   todos,
-  (value) => {
+  value => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
   },
   { deep: true }
@@ -40,20 +42,26 @@ const filteredTodos = computed<Todo[]>(() => {
   switch (filter.value) {
     case 'active':
       return todos.value.filter(t => !t.done)
+
     case 'completed':
       return todos.value.filter(t => t.done)
+
     default:
       return todos.value
   }
 })
 
 const remainingCount = computed<number>(
-  () => todos.value.filter(t => !t.done).length
+  () => todos.value.filter(({ done }) => !done).length
 )
 
-function addTodo(title: string): void {
+const hasCompleted = computed<boolean>(
+  () => todos.value.some(({ done }) => done)
+)
+
+const addTodo = (title: string): void => {
   const trimmed = title.trim()
-  if (!trimmed) return
+  if (trimmed === '') return
 
   todos.value.push({
     id: createId(),
@@ -62,19 +70,19 @@ function addTodo(title: string): void {
   })
 }
 
-function toggleTodo(id: string): void {
-  const todo = todos.value.find(t => t.id === id)
-  if (todo) {
+const toggleTodo = (id: string): void => {
+  const todo = todos.value.find(item => item.id === id)
+  if (todo !== undefined) {
     todo.done = !todo.done
   }
 }
 
-function removeTodo(id: string): void {
-  todos.value = todos.value.filter(t => t.id !== id)
+const removeTodo = (id: string): void => {
+  todos.value = todos.value.filter(item => item.id !== id)
 }
 
-function clearCompleted(): void {
-  todos.value = todos.value.filter(t => !t.done)
+const clearCompleted = (): void => {
+  todos.value = todos.value.filter(({ done }) => !done)
 }
 </script>
 
@@ -93,18 +101,11 @@ function clearCompleted(): void {
 
       <TodoInput @add-todo="addTodo" />
 
-      <footer class="footer">
-        <span>
-          {{ remainingCount }} task<span v-if="remainingCount !== 1">s</span> left
-        </span>
-        <button
-          class="btn-link"
-          type="button"
-          @click="clearCompleted"
-        >
-          Clear completed
-        </button>
-      </footer>
+      <TodoFooter
+        :remaining-count="remainingCount"
+        :has-completed="hasCompleted"
+        @clear-completed="clearCompleted"
+      />
     </section>
   </main>
 </template>

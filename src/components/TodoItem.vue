@@ -10,33 +10,35 @@ const emit = defineEmits<{
   (e: 'remove', id: string): void
 }>()
 
-function toggle(): void {
+const toggle = (): void => {
   emit('toggle', props.todo.id)
 }
 
-function remove(): void {
+const remove = (): void => {
   emit('remove', props.todo.id)
 }
 </script>
 
 <template>
-  <li class="todo-item">
-    <label class="todo-item__label">
+  <li class="item">
+    <label class="item__label">
       <input
         type="checkbox"
+        class="visually-hidden"
         :checked="props.todo.done"
         @change="toggle"
+        tabindex="0"
       />
       <span
-        class="todo-item__title"
-        :class="{ 'todo-item__title--done': props.todo.done }"
+        class="item__title"
+        :class="{ 'item__title--done': props.todo.done }"
       >
         {{ props.todo.title }}
       </span>
     </label>
     <button
       type="button"
-      class="todo-item__remove"
+      class="item__remove"
       @click="remove"
       aria-label="Delete task"
     >
@@ -44,3 +46,25 @@ function remove(): void {
     </button>
   </li>
 </template>
+
+<style scoped>
+.item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.item__label {
+  background-color: #555;
+  flex-grow: 1;
+          text-align: left;
+
+  &:has(:checked) {
+    background-color: #0f0;
+  }
+
+  &:has(:focus-visible) {
+    outline: 2px solid #f00;
+  }
+}
+</style>
