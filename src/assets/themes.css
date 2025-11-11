@@ -1,0 +1,23 @@
+:root {
+  --spacing-25: 4px;
+  --spacing-50: 8px;
+  --spacing-100: 16px;
+  --spacing-300: 32px;
+
+  --item-height: var(--spacing-300);
+
+  &:has([data-theme="night"]) {
+    --colour-pos: #fff;
+    --colour-neg: #111;
+  }
+
+  &:has([data-theme="day"]) {
+    --colour-pos: #111;
+    --colour-neg: #fff;
+  }
+
+  &:has([data-theme="test"]) {
+    --colour-pos: #10b904;
+    --colour-neg: #000e03;
+  }
+}

@@ -1,11 +1,17 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  line-height: 1.2;
   font-weight: 400;
 
-  color-scheme: light dark;
+  /* color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #242424; */
+  color: var(--colour-pos);
+  background-color: var(--colour-neg);
+
+  font-family: "WDXL Lubrifont JP N", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -26,7 +32,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  min-width: 500px;
   min-height: 100vh;
 }
 
@@ -51,10 +57,7 @@ button:focus-visible {
 
 
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 /* @media (prefers-color-scheme: light) {
@@ -69,6 +72,19 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+.focus {
+  outline: 0 solid var(--colour-pos);
+  outline-offset: 0;
+  transition: outline 0.1s ease;
+
+  &:hover,
+  &:focus-visible,
+  &:has(:focus-visible) {
+    outline: 2px solid var(--colour-pos);
+    outline-offset: 3px;
+  }
+}
 
 .visually-hidden {
   clip: rect(0 0 0 0);

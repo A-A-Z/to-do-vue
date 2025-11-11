@@ -5,6 +5,7 @@ import TodoFilters from './components/TodoFilters.vue'
 import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
 import { createId } from './utils/createId'
+import './assets/themes.css'
 
 import type { Todo, TodoFilter } from './types'
 
@@ -21,7 +22,7 @@ onMounted(() => {
       const parsed = JSON.parse(saved) as Todo[]
       // naive validation
       if (Array.isArray(parsed)) {
-        todos.value = parsed
+        todos.value = parsed.map(item => ({ ...item, isNew: false }))
       }
     } catch {
       todos.value = []
@@ -41,10 +42,10 @@ watch(
 const filteredTodos = computed<Todo[]>(() => {
   switch (filter.value) {
     case 'active':
-      return todos.value.filter(t => !t.done)
+      return todos.value.filter(({ done }) => !done)
 
     case 'completed':
-      return todos.value.filter(t => t.done)
+      return todos.value.filter(({ done }) => done)
 
     default:
       return todos.value
@@ -66,7 +67,8 @@ const addTodo = (title: string): void => {
   todos.value.push({
     id: createId(),
     title: trimmed,
-    done: false
+    done: false,
+    isNew: true
   })
 }
 
@@ -87,7 +89,7 @@ const clearCompleted = (): void => {
 </script>
 
 <template>
-  <main class="app">
+  <main class="app" data-theme="night">
     <section class="card">
       <h1 class="app__title">ToDoVue</h1>
 
@@ -109,3 +111,10 @@ const clearCompleted = (): void => {
     </section>
   </main>
 </template>
+
+<style scoped>
+.card {
+  margin: auto;
+  width: 500px;
+}
+</style>

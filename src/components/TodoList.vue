@@ -40,9 +40,9 @@ const handleRemove = (id: string): void => {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-100);
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: var(--spacing-100) 0;
 }
 </style>
