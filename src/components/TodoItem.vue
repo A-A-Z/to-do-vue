@@ -37,7 +37,11 @@ const handleDelete = (event: AnimationEvent): void => {
 </script>
 
 <template>
-  <li class="item" :class="{ 'item--new': props.todo.isNew, 'item--deleted': isDeleted }" v-on:animationend="handleDelete">
+  <li
+    class="item"
+    :class="{ 'item--new': props.todo.isNew, 'item--deleted': isDeleted }"
+    v-on:animationend="handleDelete"
+  >
     <label class="item__label focus">
       <input
         :id="props.todo.id"
@@ -160,6 +164,7 @@ const handleDelete = (event: AnimationEvent): void => {
   border-radius: 6px;
   cursor: pointer;
   display: flex;
+  height: var(--item-height);
   justify-content: center;
   width: var(--item-height);
 }

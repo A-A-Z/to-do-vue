@@ -6,6 +6,8 @@
 
   --item-height: var(--spacing-300);
 
+  --border: 2px solid var(--colour-pos);
+
   &:has([data-theme="night"]) {
     --colour-pos: #fff;
     --colour-neg: #111;
