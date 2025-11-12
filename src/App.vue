@@ -113,8 +113,14 @@ const clearCompleted = (): void => {
 </template>
 
 <style scoped>
+.app__title {
+  font-size: 3.5rem;
+  margin: 0;
+  padding: 0;
+}
+
 .card {
   margin: auto;
-  width: 500px;
+  width: clamp(100px, 100vw, 500px);
 }
 </style>

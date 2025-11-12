@@ -17,6 +17,12 @@ const toggle = (): void => {
   emit('toggle', props.todo.id)
 }
 
+const handleKeyDown = (event: KeyboardEvent): void => {
+  if (event.key === 'Enter') {
+    emit('toggle', props.todo.id)
+  }
+}
+
 const remove = (): void => {
   // because we want a delete animation to play we first just mark the item as deleted...
   isDeleted.value = true
@@ -34,14 +40,17 @@ const handleDelete = (event: AnimationEvent): void => {
   <li class="item" :class="{ 'item--new': props.todo.isNew, 'item--deleted': isDeleted }" v-on:animationend="handleDelete">
     <label class="item__label focus">
       <input
+        :id="props.todo.id"
         type="checkbox"
         class="visually-hidden"
         :checked="props.todo.done"
+        :onkeydown="handleKeyDown"
         @change="toggle"
         tabindex="0"
       />
       <span class="item__check"></span>
       <span
+        :id="`${props.todo.id}-text`"
         class="item__title"
         :class="{ 'item__title--done': props.todo.done }"
       >
@@ -53,6 +62,7 @@ const handleDelete = (event: AnimationEvent): void => {
       class="item__remove focus"
       @click="remove"
       aria-label="Delete task"
+      :aria-describedby="`${props.todo.id}-text`"
     >
       <span class="icon-remove"></span>
     </button>
@@ -117,7 +127,16 @@ const handleDelete = (event: AnimationEvent): void => {
   font-size: 1.2rem;
   gap: var(--spacing-100);
   height: var(--item-height);
+  overflow: hidden;
   padding: 0 var(--spacing-50);
+  width: inherit;
+}
+
+.item__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100% - (20px + 16px));
 }
 
 .item__check {

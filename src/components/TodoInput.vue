@@ -21,8 +21,13 @@ function submit(): void {
       v-model="title"
       type="text"
       class="input__field focus"
+      aria-label="New to do item"
     />
-    <button type="submit" class="input__submit focus">
+    <button
+      type="submit"
+      class="input__submit focus"
+      aria-label="Add item"
+    >
       <span class="icon-plus"></span>
     </button>
   </form>
@@ -71,9 +76,6 @@ function submit(): void {
   margin-left: calc(var(--icon-size) * -1);
   position: relative;
   width: 1px;
-  /* position: absolute;
-  margin-left: 3px;
-  margin-top: 10px; */
 }
 .icon-plus:before {
   content: '';

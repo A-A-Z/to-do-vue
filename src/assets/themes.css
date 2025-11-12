@@ -9,6 +9,7 @@
   &:has([data-theme="night"]) {
     --colour-pos: #fff;
     --colour-neg: #111;
+    --colour-bg: linear-gradient(0deg,#111 0%, #212121 100%);
   }
 
   &:has([data-theme="day"]) {

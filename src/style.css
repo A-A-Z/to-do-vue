@@ -7,7 +7,8 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424; */
   color: var(--colour-pos);
-  background-color: var(--colour-neg);
+  background: var(--colour-neg);
+  background: var(--colour-bg);
 
   font-family: "WDXL Lubrifont JP N", sans-serif;
   font-weight: 400;
