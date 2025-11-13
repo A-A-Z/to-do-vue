@@ -30,7 +30,3 @@ function onChange(): void {
     <span>{{ label }}</span>
   </label>
 </template>
-
-<style>
-
-</style>

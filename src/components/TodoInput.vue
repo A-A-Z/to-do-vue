@@ -21,6 +21,7 @@ function submit(): void {
       v-model="title"
       type="text"
       class="input__field focus"
+      placeholder="New item"
       aria-label="New to do item"
     />
     <button
@@ -50,6 +51,10 @@ function submit(): void {
   font-size: 1.2rem;
   height: var(--item-height);
   padding: 0 var(--spacing-50);
+
+  &::placeholder {
+    color: var(--colour-pos);
+  }
 }
 
 .input__submit {
@@ -73,7 +78,7 @@ function submit(): void {
   color: var(--colour-neg);
   display: block;
   height: 1px;
-  margin-left: calc(var(--icon-size) * -1);
+  margin: -1px 0 0 calc(var(--icon-size) * -1);
   position: relative;
   width: 1px;
 }

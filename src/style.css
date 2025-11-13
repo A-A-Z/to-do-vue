@@ -60,25 +60,12 @@ button:focus-visible {
   margin: 0 auto;
 }
 
-/* @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
-
 .focus {
   outline: 0 solid var(--colour-pos);
   outline-offset: 0;
   transition: outline 0.1s ease;
 
-  &:hover,
+  &:hover:not(:disabled),
   &:focus-visible,
   &:has(:focus-visible) {
     outline: 2px solid var(--colour-pos);

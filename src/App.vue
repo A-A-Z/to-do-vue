@@ -14,8 +14,8 @@ import type { Todo, TodoFilter } from './types'
 
 - [ ] Arrow keys on item list
 - [ ] Fix style trans on filter change
-- [ ] Theme selector
-- [ ] Footer
+- [x] Theme selector
+- [x] Footer
 - [ ] Unit testing
 
 optional
@@ -113,10 +113,6 @@ const removeTodo = (id: string): void => {
 const clearCompleted = (): void => {
   todos.value = todos.value.filter(({ done }) => !done)
 }
-
-// const updateTheme = (newTheme: string): void => {
-//   theme.value = newTheme
-// }
 </script>
 
 <template>

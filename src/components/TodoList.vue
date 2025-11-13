@@ -30,9 +30,9 @@ const handleRemove = (id: string): void => {
       @remove="handleRemove"
     />
   </ul>
-  <p v-else class="empty">
-    No tasks
-  </p>
+  <div v-else class="empty">
+
+  </div>
 </template>
 
 <style scoped>
@@ -44,5 +44,9 @@ const handleRemove = (id: string): void => {
   list-style-type: none;
   margin: 0;
   padding: var(--spacing-100) 0;
+}
+
+.empty {
+  height: var(--spacing-100);
 }
 </style>

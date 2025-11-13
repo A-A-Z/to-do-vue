@@ -177,7 +177,7 @@ const handleDelete = (event: AnimationEvent): void => {
   color: var(--colour-neg);
   display: block;
   height: 1px;
-  margin-left: calc(var(--icon-size) * -1);
+  margin: -1px 0 0 calc(var(--icon-size) * -1);
   position: relative;
   width: 1px;
 }
