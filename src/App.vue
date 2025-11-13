@@ -4,23 +4,39 @@ import TodoInput from './components/TodoInput.vue'
 import TodoFilters from './components/TodoFilters.vue'
 import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
+import ThemeSelect from './components/ThemeSelect.vue'
 import { createId } from './utils/createId'
 import './assets/themes.css'
 
 import type { Todo, TodoFilter } from './types'
 
-const STORAGE_KEY = 'to-do-vue-app'
+/* TODO:
+
+- [ ] Arrow keys on item list
+- [ ] Fix style trans on filter change
+- [ ] Theme selector
+- [ ] Footer
+- [ ] Unit testing
+
+optional
+
+- Search
+
+*/
+
+const STORAGE_KEY_ITEMS = 'todo-items'
+const STORAGE_KEY_THEME = 'todo-theme'
 
 const todos = ref<Todo[]>([])
 const filter = ref<TodoFilter>('all')
+const theme = ref<string>('night')
 
 // load from localStorage
 onMounted(() => {
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved !== null) {
+  const savedItems = localStorage.getItem(STORAGE_KEY_ITEMS)
+  if (savedItems !== null) {
     try {
-      const parsed = JSON.parse(saved) as Todo[]
-      // naive validation
+      const parsed = JSON.parse(savedItems) as Todo[]
       if (Array.isArray(parsed)) {
         todos.value = parsed.map(item => ({ ...item, isNew: false }))
       }
@@ -28,15 +44,26 @@ onMounted(() => {
       todos.value = []
     }
   }
+
+  const savedTheme = localStorage.getItem(STORAGE_KEY_THEME)
+  if (savedTheme !== null) {
+    theme.value = savedTheme
+  }
 })
 
 // persist to localStorage
 watch(
   todos,
   value => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+    localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(value))
   },
   { deep: true }
+)
+watch(
+  theme,
+  value => {
+    localStorage.setItem(STORAGE_KEY_THEME, value)
+  }
 )
 
 const filteredTodos = computed<Todo[]>(() => {
@@ -86,11 +113,17 @@ const removeTodo = (id: string): void => {
 const clearCompleted = (): void => {
   todos.value = todos.value.filter(({ done }) => !done)
 }
+
+// const updateTheme = (newTheme: string): void => {
+//   theme.value = newTheme
+// }
 </script>
 
 <template>
-  <main class="app" data-theme="night">
+  <main class="app" :data-theme="theme">
     <section class="card">
+      <ThemeSelect v-model:theme="theme" />
+
       <h1 class="app__title">ToDoVue</h1>
 
       <TodoFilters v-model:filter="filter" />

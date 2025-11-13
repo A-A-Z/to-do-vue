@@ -11,16 +11,24 @@
   &:has([data-theme="night"]) {
     --colour-pos: #fff;
     --colour-neg: #111;
-    --colour-bg: linear-gradient(0deg,#111 0%, #212121 100%);
+    --colour-bg: linear-gradient(0deg,#111 0%, #262626 100%);
   }
 
   &:has([data-theme="day"]) {
     --colour-pos: #111;
     --colour-neg: #fff;
+    --colour-bg: linear-gradient(0deg,#ddd 0%, #fff 100%);
   }
 
-  &:has([data-theme="test"]) {
+  &:has([data-theme="matrix"]) {
     --colour-pos: #10b904;
     --colour-neg: #000e03;
+    --colour-bg: linear-gradient(0deg,#000e03 0%, #000202 30%, #000202 70%, #000e03 100%);
+  }
+
+  &:has([data-theme="avalon"]) {
+    --colour-pos: #fca611;
+    --colour-neg: #0c0200 ;
+    --colour-bg: linear-gradient(0deg,#150200 0%, #0c0200 20%, #0c0200 80%, #150200 100%);
   }
 }
