@@ -22,13 +22,11 @@ const options: { value: TodoFilter; label: string }[] = [
   { value: 'active', label: 'Active' },
   { value: 'completed', label: 'Completed' }
 ]
-
 </script>
 
 <template>
-  <fieldset class="filters" aria-label="Filter tasks">
+  <fieldset class="filters focus" aria-label="Filter tasks">
     <legend class="visually-hidden">Show</legend>
-    <!-- <div class="filters__backing"></div> -->
     <TodoRadio
       v-for="(option, index) in options"
       :key="option.value"
@@ -39,7 +37,7 @@ const options: { value: TodoFilter; label: string }[] = [
       :index="index"
     />
     <div class="filters__backing">
-      <div class="filters__foo">
+      <div class="filters__mask">
         <div
           v-for="option in options"
           :key="option.value"
@@ -47,21 +45,16 @@ const options: { value: TodoFilter; label: string }[] = [
         >{{ option.label }}</div>
       </div>
     </div>
-    <!-- <div class="filter-mask">
-      <div
-        v-for="option in options"
-        :key="option.value"
-        class="filters__option"
-      >{{ option.label }}</div>
-  </div> -->
   </fieldset>
 </template>
 
 <style>
 .filters {
-  --option-width: 120px;
-  --option-gutter: var(--spacing-50);
-  --option-gap: var(--spacing-100);
+  --option-width: 110px;
+  --option-height: 26px;
+  --option-gutter: var(--spacing-25);
+  --option-gap: var(--spacing-25);
+  --option-trans: left 0.3s ease-in-out;
 
   border: var(--border);
   border-radius: 6px;
@@ -71,104 +64,63 @@ const options: { value: TodoFilter; label: string }[] = [
   position: relative;
   width: fit-content;
 }
+
 .filters__option {
-  /* background-color: rgb(200 0 0 / 0.5); */
+  align-items: center;
   cursor: pointer;
   display: flex;
-  height: 40px;
-  justify-content: center;
-  /* width: 12ch; */
-  width: var(--option-width);
-  min-width: var(--option-width);
   font-size: 1rem;
-
-  &:has(:checked) span {
-    /* color: #000; */
-  }
+  height: var(--option-height);
+  justify-content: center;
+  min-width: var(--option-width);
+  width: var(--option-width);
 }
 
 .filters__backing {
   background-color: var(--colour-pos);
-  /* background-color: #00f; */
+  border-radius: 4px;
+  color: var(--colour-neg);
   display: flex;
-  height: 40px;
+  height: var(--option-height);
   justify-content: center;
-  /* width: 12ch; */
-  width: 120px;
-  /* min-width: 120px; */
-  position: absolute;
-  /* z-index: -1; */
   left: var(--option-gutter);
-  transition: left 0.3s ease-in-out;
-
   overflow: clip;
-  color: #111;
+  position: absolute;
+  transition: left 0.3s ease-in-out;
+  width: var(--option-width);
 }
 
-.filters__foo {
+.filters__mask {
   display: flex;
-  gap: var(--spacing-100);
-  /* padding: var(--spacing-50); */
+  gap: var(--option-gap);
   position: absolute;
   inset: 0;
   overflow: clip;
   pointer-events: none;
   min-width: 800px;
-  transition: left 0.3s ease-in-out;
+  transition: var(--option-trans);
 }
 
 .filters {
+  /* 
+    Do get the masking effect we have to move the backing one way while 
+    moving the mask the other way
+  */
+
+  /* Second option */
   &:has([data-index="1"]:checked) .filters__backing {
     left: calc(var(--option-gutter) + var(--option-gap) + var(--option-width));
   }
-  &:has([data-index="1"]:checked) .filters__foo {
-    /* transform: translateX(calc((var(--option-gutter) + var(--option-gap) + var(--option-width)) * -1)); */
-    /* transform: translateX(-134px) */
-    /* transform: translateX(calc((var(--option-gap) + var(--option-width)) * -1)); */
+  &:has([data-index="1"]:checked) .filters__mask {
     left: calc((var(--option-gap) + var(--option-width)) * -1);
   }
+
+  /* First option */
   &:has([data-index="2"]:checked) .filters__backing {
     left: calc(var(--option-gutter) + ((var(--option-gap) + var(--option-width)) * 2));
   }
-  &:has([data-index="2"]:checked) .filters__foo {
-    /* transform: translateX(calc((var(--option-gutter) + var(--option-gap) + var(--option-width)) * -1)); */
-    /* transform: translateX(-134px) */
-    /* transform: translateX(calc((var(--option-gap) + var(--option-width)) * -2)); */
+  &:has([data-index="2"]:checked) .filters__mask {
     left: calc((var(--option-gap) + var(--option-width)) * -2);
   }
 }
-
-.filter-mask {
-  background-color: rgb(0 200 0 / 0.5);
-  color: #f00;
-  height: 30px;
-  width: 50px;
-
-  display: flex;
-  gap: var(--spacing-100);
-  padding: var(--spacing-50);
-  position: absolute;
-  inset: 0;
-  overflow: clip;
-  pointer-events: none;
-
-  /* &:after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 80px;
-    position: absolute;
-    left: 100px;
-    background-color: #0ff;
-  } */
-
-  & .filters__option {
-    background-color: #00f;
-    color: #000;
-  }
-  /* overflow: hidden; */
-}
-/* .mark-obj {
-  white-space: nowrap;
-} */
 </style>
