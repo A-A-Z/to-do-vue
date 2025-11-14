@@ -78,7 +78,7 @@ const handleDelete = (event: AnimationEvent): void => {
         class="item__title"
         :class="{ 'item__title--done': props.todo.done }"
       >
-        {{ props.index }} - {{ props.todo.title }}
+        {{ props.todo.title }}
       </span>
     </label>
     <button
