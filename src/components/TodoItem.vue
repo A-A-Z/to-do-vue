@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import type { Todo } from '../types'
 
 const props = defineProps<{
+  index: number
   todo: Todo
 }>()
+
+const inputRef = useTemplateRef<HTMLInputElement>('input-ref')
+
+defineExpose({
+  // expose the input so we can manage focus
+  inputRef
+})
 
 const isDeleted = ref<boolean>(false)
 
 const emit = defineEmits<{
   (e: 'toggle', id: string): void
-  (e: 'remove', id: string): void
+  (e: 'remove', id: string, index: number): void
+  (e: 'keydown', key: string, index: number): void
 }>()
 
 const toggle = (): void => {
@@ -18,8 +27,18 @@ const toggle = (): void => {
 }
 
 const handleKeyDown = (event: KeyboardEvent): void => {
-  if (event.key === 'Enter') {
-    emit('toggle', props.todo.id)
+  switch (event.key) {
+    case 'Enter':
+      emit('toggle', props.todo.id)
+      break
+
+    case 'Backspace':
+    case 'Delete':
+      isDeleted.value = true
+      break
+
+    default:
+      emit('keydown', event.key, props.index)
   }
 }
 
@@ -31,7 +50,7 @@ const remove = (): void => {
 const handleDelete = (event: AnimationEvent): void => {
   if (event.animationName === 'slide-out') {
     // ...then we delete it for real once the animation is done.
-    emit('remove', props.todo.id)
+    emit('remove', props.todo.id, props.index)
   }
 }
 </script>
@@ -44,13 +63,14 @@ const handleDelete = (event: AnimationEvent): void => {
   >
     <label class="item__label focus">
       <input
+        ref="input-ref"
         :id="props.todo.id"
         type="checkbox"
         class="visually-hidden"
         :checked="props.todo.done"
         :onkeydown="handleKeyDown"
+        :disabled="isDeleted"
         @change="toggle"
-        tabindex="0"
       />
       <span class="item__check"></span>
       <span
@@ -58,13 +78,14 @@ const handleDelete = (event: AnimationEvent): void => {
         class="item__title"
         :class="{ 'item__title--done': props.todo.done }"
       >
-        {{ props.todo.title }}
+        {{ props.index }} - {{ props.todo.title }}
       </span>
     </label>
     <button
       type="button"
       class="item__remove focus"
       @click="remove"
+      :disabled="isDeleted"
       aria-label="Delete task"
       :aria-describedby="`${props.todo.id}-text`"
     >

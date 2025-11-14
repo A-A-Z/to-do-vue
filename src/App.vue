@@ -12,15 +12,19 @@ import type { Todo, TodoFilter } from './types'
 
 /* TODO:
 
-- [ ] Arrow keys on item list
+Must:
+
+- [x] Arrow keys on item list
 - [ ] Fix style trans on filter change
 - [x] Theme selector
 - [x] Footer
+- [ ] Fix layout
 - [ ] Unit testing
 
-optional
+Optional:
 
-- Search
+- [ ] More themes
+- [ ] Search
 
 */
 

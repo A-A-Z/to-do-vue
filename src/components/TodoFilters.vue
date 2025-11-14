@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import TodoRadio from './TodoRadio.vue'
 import type { TodoFilter } from '../types'
 
-const props = defineProps<{
+const { filter } = defineProps<{
   filter: TodoFilter
 }>()
 
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 
 // Bridge parent v-model:filter <-> child v-model
 const model = computed<TodoFilter>({
-  get: () => props.filter,
+  get: () => filter,
   set: (value) => emit('update:filter', value)
 })
 
