@@ -1,4 +1,3 @@
-// import { defineConfig } from 'vite'
 import { defineConfig, configDefaults } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 

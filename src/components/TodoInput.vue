@@ -27,7 +27,7 @@ function submit(): void {
     <button
       type="submit"
       class="input__submit focus"
-      aria-label="Add item"
+      aria-label="Submit"
     >
       <span class="icon-plus"></span>
     </button>
