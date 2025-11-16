@@ -1,7 +1,6 @@
 import { describe, test, expect } from 'vitest'
 import { render, fireEvent } from '@testing-library/vue'
 import { nextTick } from 'vue'
-// import userEvent from '@testing-library/user-event'
 import TodoItem from './TodoItem.vue'
 
 describe('<TodoItem />', () => {

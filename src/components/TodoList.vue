@@ -68,7 +68,7 @@ const handleKeydown = (key: string, index: number): void => {
 </script>
 
 <template>
-  <ul v-if="todos.length" class="list">
+  <ul v-if="todos.length" class="list" aria-label="To do item list">
     <TodoItem
       v-for="(todo, index) in todos"
       ref="items"
