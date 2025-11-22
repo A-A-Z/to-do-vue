@@ -18,7 +18,7 @@ Must:
 - [ ] Fix style trans on filter change
 - [x] Theme selector
 - [x] Footer
-- [ ] Fix layout
+- [x] Fix layout
 - [ ] Unit testing
 
 Optional:
@@ -121,12 +121,13 @@ const clearCompleted = (): void => {
 
 <template>
   <main class="app" :data-theme="theme">
+    <ThemeSelect v-model:theme="theme" />
     <section class="card">
-      <ThemeSelect v-model:theme="theme" />
 
-      <h1 class="app__title">ToDoVue</h1>
-
-      <TodoFilters v-model:filter="filter" />
+      <header class="header">
+        <h1 class="header__title">ToDoVue</h1>
+        <TodoFilters v-model:filter="filter" />
+      </header>
 
       <TodoList
         :todos="filteredTodos"
@@ -146,8 +147,15 @@ const clearCompleted = (): void => {
 </template>
 
 <style scoped>
-.app__title {
-  font-size: 3.5rem;
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: var(--spacing-300);
+}
+
+.header__title {
+  font-size: 2.2rem;
   margin: 0;
   padding: 0;
 }

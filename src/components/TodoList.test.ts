@@ -54,6 +54,7 @@ describe('<TodoList />', () => {
     expect(getByLabelText('Item 1')).toHaveFocus()
 
     // Page down takes us to the last item
+    // (for some reason userEvent doesn't like PageDown)
     fireEvent.keyDown(getByLabelText('Item 1'), { key: 'PageDown' })
     expect(getByLabelText('Item 3')).toHaveFocus()
 
