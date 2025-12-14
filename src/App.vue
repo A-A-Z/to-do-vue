@@ -28,6 +28,7 @@ Optional:
 
 */
 
+const APP_NAME = 'ToDoVue'
 const STORAGE_KEY_ITEMS = 'todo-items'
 const STORAGE_KEY_THEME = 'todo-theme'
 
@@ -60,6 +61,14 @@ watch(
   todos,
   value => {
     localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(value))
+
+    // update page title based on todo state
+    if (todos.value.length === 0) {
+      document.title = `${APP_NAME}: No items.`
+      return
+    }
+    const doneCount = todos.value.filter(({ done }) => done).length
+    document.title = `${APP_NAME}: ${doneCount}/${todos.value.length} tasks`
   },
   { deep: true }
 )
