@@ -6,6 +6,7 @@ import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
 import ThemeSelect from './components/ThemeSelect.vue'
 import { createId } from './utils/createId'
+import { useTheme } from './composables/useTheme'
 import './assets/themes.css'
 
 import type { Todo, TodoFilter } from './types'
@@ -30,11 +31,10 @@ Optional:
 
 const APP_NAME = 'ToDoVue'
 const STORAGE_KEY_ITEMS = 'todo-items'
-const STORAGE_KEY_THEME = 'todo-theme'
 
 const todos = ref<Todo[]>([])
 const filter = ref<TodoFilter>('all')
-const theme = ref<string>('night')
+const theme = useTheme()
 
 // load from localStorage
 onMounted(() => {
@@ -48,11 +48,6 @@ onMounted(() => {
     } catch {
       todos.value = []
     }
-  }
-
-  const savedTheme = localStorage.getItem(STORAGE_KEY_THEME)
-  if (savedTheme !== null) {
-    theme.value = savedTheme
   }
 })
 
@@ -71,12 +66,6 @@ watch(
     document.title = `${APP_NAME}: ${doneCount}/${todos.value.length} tasks`
   },
   { deep: true }
-)
-watch(
-  theme,
-  value => {
-    localStorage.setItem(STORAGE_KEY_THEME, value)
-  }
 )
 
 const filteredTodos = computed<Todo[]>(() => {
